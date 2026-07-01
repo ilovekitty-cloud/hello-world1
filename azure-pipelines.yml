@@ -1,0 +1,20 @@
+trigger:
+- master
+
+pool:
+  name: UbuntuPool
+
+steps:
+- checkout: self
+
+- script: |
+    echo "===== Current Directory ====="
+    pwd
+
+    echo "===== Repository Files ====="
+    ls -la
+  displayName: "Check Repository"
+
+- script: |
+    mvn clean package
+  displayName: "Build Java Project"
