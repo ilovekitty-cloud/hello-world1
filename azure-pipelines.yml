@@ -7,14 +7,18 @@ pool:
 steps:
 - checkout: self
 
-- script: |
-    echo "===== Current Directory ====="
-    pwd
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'SonarQubeConnection'
+    scannerMode: 'Other'
+    extraProperties: |
+      sonar.projectKey=hello-world1
+      sonar.projectName=hello-world1
 
-    echo "===== Repository Files ====="
-    ls -la
-  displayName: "Check Repository"
-
 - script: |
-    mvn clean package
-  displayName: "Build Java Project"
+    mvn clean package sonar:sonar
+  displayName: "Build and Sonar Scan"
+
+- task: SonarQubePublish@7
+  inputs:
+    pollingTimeoutSec: '300'
